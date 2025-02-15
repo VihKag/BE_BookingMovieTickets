@@ -32,7 +32,53 @@ build/
 ### VS Code ###
 .vscode/
 
-# Chặn file chứa OAuth keys
-src/main/resources/application.properties
-src/main/resources/application.yml
+### 💡 CHẶN CÁC FILE MÔI TRƯỜNG ###
 .env
+*.properties
+*.yml
+*.yaml
+config/
+
+### 💡 CHẶN FILE BUILD ###
+/target/
+/bin/
+/build/
+
+### 💡 CHẶN CÁC FILE INTELLIJ IDEA, ECLIPSE ###
+/.idea/
+/*.iml
+/.classpath
+/.project
+/.settings/
+
+### 💡 CHẶN LOGS ###
+*.log
+logs/
+debug.log
+error.log
+hs_err_pid*
+
+### 💡 CHẶN FILE THỜI GIAN CHẠY ###
+*.war
+*.jar
+
+### 💡 CHẶN THƯ VIỆN ###
+/lib/
+/out/
+/vendor/
+
+### 💡 CHẶN FILE MAVEN & GRADLE ###
+/mvnw
+/mvnw.cmd
+/.mvn/
+/.gradle/
+/build/
+
+### 💡 CHẶN DATABASE LOCAL ###
+/h2-data/
+*.db
+*.sqlite
+*.sql
+
+### 💡 CHẶN THƯ MỤC DOCKER (NẾU DÙNG DOCKER) ###
+/docker-compose.override.yml
