@@ -6,7 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +27,6 @@ public class Genre {
   private String name;
   @Column(unique = true)
   private String slug;
-  @ManyToOne
-  @JoinColumn(name = "movie_id", referencedColumnName = "id")
-  private Movie movie;
+  @ManyToMany(mappedBy = "genres")
+  private Set<Movie> movies = new HashSet<>();
 }
