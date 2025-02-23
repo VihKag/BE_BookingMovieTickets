@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Seat {
   @Enumerated(EnumType.STRING)
   private TypeSeat type;
   private Boolean status;
-  @ManyToOne
+  @OneToOne
   private Ticket ticket;
   @ManyToOne
   private Screen screen;
