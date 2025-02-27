@@ -1,6 +1,7 @@
 package com.nvk.cinemav.controller;
 
 import com.nvk.cinemav.config.VNPAYConfig;
+import com.nvk.cinemav.dto.BookingDTO;
 import com.nvk.cinemav.kafka.producer.PaymentProducer;
 import com.nvk.cinemav.service.IPaymentService;
 
@@ -9,10 +10,15 @@ import com.nvk.cinemav.vnpay.VNPAYservice;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
-
-  private String latestPaymentUrl = "";
   private final VNPAYservice vnpayService;
   private final IPaymentService paymentService;
   private final KafkaTemplate kafkaTemplate;
@@ -64,25 +68,25 @@ public class PaymentController {
   }
 
   @PostMapping("/create_payment")
-  public String createPaymentProducer(@RequestParam("amount") int orderTotal,
-      @RequestParam("orderInfo") String orderInfo,
+  public String createPaymentProducer(@RequestBody BookingDTO bookingDTO,
       HttpServletRequest request) {
     String baseUrl =
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
     // 🟢 Gửi sự kiện "payment-request" vào Kafka
-    paymentProducer.sendPaymentRequest(orderTotal, orderInfo, baseUrl);
+    paymentProducer.sendPaymentRequest(baseUrl, bookingDTO);
 
     return "Yêu cầu thanh toán đã được gửi. Đang xử lý...";
   }
 
-  @KafkaListener(topics = "payment-url-generated", groupId = "payment-group")
-  public void updatePaymentUrl(String url) {
-    this.latestPaymentUrl = url;
-  }
 
   @GetMapping("/get-payment-url")
-  public String getPaymentUrl() {
-    return latestPaymentUrl.isEmpty() ? "Đang xử lý..." : latestPaymentUrl;
+  public ResponseEntity<?> getPaymentUrl(@RequestParam String email) {
+    String url = paymentService.getPaymentUrl(email);
+    if (url == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No payment URL found for this booking.");
+    }
+    paymentService.removePaymentUrl(email); // Xóa URL sau khi lấy
+    return ResponseEntity.ok(url);
   }
 }
