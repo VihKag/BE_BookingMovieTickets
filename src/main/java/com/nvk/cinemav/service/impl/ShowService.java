@@ -1,5 +1,6 @@
 package com.nvk.cinemav.service.impl;
 
+import com.nvk.cinemav.dto.ScreenDTO;
 import com.nvk.cinemav.dto.ShowDTO;
 import com.nvk.cinemav.entity.Movie;
 import com.nvk.cinemav.entity.Screen;
@@ -11,12 +12,15 @@ import com.nvk.cinemav.service.IShowService;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ShowService implements IShowService {
   private final ShowRepository showRepository;
@@ -30,28 +34,22 @@ public class ShowService implements IShowService {
   @Override
   public ShowDTO getShowDetails(UUID showId) {
     Show show = showRepository.findById(showId).orElseThrow(() -> new RuntimeException("Not found show!"));
-    ShowDTO showDTO = new ShowDTO();
-    showDTO.setId(show.getId());
-    showDTO.setAvailableSeats(show.getAvailableSeats());
-    showDTO.setMovie(show.getMovie());
-    showDTO.setScreen(show.getScreen());
-    showDTO.setTime(show.getTime());
+    ShowDTO showDTO = new ShowDTO(show);
     return showDTO;
   }
 
   @Override
   public List<ShowDTO> getListShows(String search) {
     List<Show> shows = showRepository.findUpcomingShows();
-    return shows.stream().map(
-        show -> new ShowDTO(
-            show.getId(),
-            show.getMovie(),
-            show.getScreen(),
-            show.getTime(),
-            show.getAvailableSeats()
-        )
-    ).collect(Collectors.toList());
+    log.info(shows.toString());
+    List<ShowDTO> showDTOs = new ArrayList<>();
+    for (Show show : shows) {
+      ShowDTO showDTO = new ShowDTO(show);
+      showDTOs.add(showDTO);
+    }
+    return showDTOs;
   }
+
   @Transactional
   @Override
   public String createShow(UUID movie, Integer screen, Date time) {

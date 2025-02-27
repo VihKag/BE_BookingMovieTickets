@@ -43,7 +43,7 @@ public class MovieService implements IMovieService {
         movie.getVideo(),
         movie.getTitle(),
         movie.getGenres(),
-        movie.getShow(),
+        movie.getShows(),
         movie.getDuration(),
         movie.getRelease()
     );
@@ -62,7 +62,7 @@ public class MovieService implements IMovieService {
               movie.getVideo(),
               movie.getSlug(),
               movie.getGenres(),
-              movie.getShow(),
+              movie.getShows(),
               movie.getDuration(),
               movie.getRelease()
           )
@@ -72,7 +72,6 @@ public class MovieService implements IMovieService {
   @Override
   public void createMovie(AddMovieDTO movieDTO) {
     Set<Genre> genres = new HashSet<>(genreRepository.findAllById(movieDTO.getGenres()));
-    Show show = showRepository.findById(movieDTO.getShow()).orElseThrow(()-> new RuntimeException("Show not found"));
     String imageUrl = cloudinaryService.uploadImage(movieDTO.getPoster());
     String videoUrl = cloudinaryService.uploadVideo(movieDTO.getVideo());
     Movie movie = new Movie(
@@ -83,7 +82,6 @@ public class MovieService implements IMovieService {
         videoUrl,
         movieDTO.getSlug(),
         genres,
-        show,
         movieDTO.getDuration(),
         movieDTO.getRelease()
     );
