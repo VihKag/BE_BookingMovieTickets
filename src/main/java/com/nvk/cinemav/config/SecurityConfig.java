@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClient
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -39,9 +40,16 @@ public class SecurityConfig {
 
   private static final String[] AUTH_WHITELIST = {
       "/api/*",
+      "/**",
       "/auth/*",
       "/users/*",
+      "/cinemas",
+      "/genres/*",
+      "/movies",
+      "/movies/*",
       "/oauth2/**",
+      "/shows/*",
+      "/payment/*",
       "/oauth2/authorization/google"
   };
   @Bean
@@ -66,7 +74,9 @@ public class SecurityConfig {
             .anyRequest().authenticated())// Cho phép truy cập không cần xác thực cho các URL đăng nhập, đăng ký
         .exceptionHandling(exception -> exception
             .authenticationEntryPoint((request, response, authException) -> {
-              response.sendRedirect("/login"); // Nếu chưa đăng nhập, chuyển hướng đến login
+              response.setContentType("application/json");
+              response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+              response.getWriter().write("{\"error\": \"Unauthorized access\"}");
             })
             .accessDeniedHandler((request, response, accessDeniedException) -> {
               response.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have permit to access!");
@@ -85,7 +95,7 @@ public class SecurityConfig {
         )
 //        .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Tắt session
         .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Cho phép session khi cần thiết
-//        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // Thêm JwtAuthFilter trước bộ lọc xác thực mặc định
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // Thêm JwtAuthFilter trước bộ lọc xác thực mặc định
         .build();
   }
 
