@@ -1,9 +1,8 @@
 package com.nvk.cinemav.service;
 
-import com.nvk.cinemav.dto.TicketDTO;
-import com.nvk.cinemav.entity.Ticket;
+import com.nvk.cinemav.dto.BookingDTO;
 
 public interface ITicketService {
-  void bookTicket(TicketDTO ticket);
-  void cancelTicket(TicketDTO ticket);
+  void bookTicket(BookingDTO ticket);
+  void cancelTicket(BookingDTO ticket);
 }

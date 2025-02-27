@@ -1,7 +1,6 @@
 package com.nvk.cinemav.service.impl;
 
-import com.nvk.cinemav.dto.TicketDTO;
-import com.nvk.cinemav.entity.Ticket;
+import com.nvk.cinemav.dto.BookingDTO;
 import com.nvk.cinemav.kafka.producer.TicketProducer;
 import com.nvk.cinemav.repository.TicketRepository;
 import com.nvk.cinemav.service.ITicketService;
@@ -21,12 +20,12 @@ public class TicketService implements ITicketService {
   }
 
   @Override
-  public void bookTicket(TicketDTO ticket) {
+  public void bookTicket(BookingDTO ticket) {
     ticketProducer.sendBookingEvent(ticket);
   }
 
   @Override
-  public void cancelTicket(TicketDTO ticket) {
+  public void cancelTicket(BookingDTO ticket) {
 
   }
 }

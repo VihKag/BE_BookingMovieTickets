@@ -1,5 +1,6 @@
 package com.nvk.cinemav.service.impl;
 
+import com.nvk.cinemav.entity.Seat;
 import com.nvk.cinemav.entity.Show;
 import com.nvk.cinemav.repository.SeatRepository;
 import com.nvk.cinemav.repository.ShowRepository;
@@ -34,4 +35,10 @@ public class SeatService implements ISeatService {
       seatRepository.updateSeatStatusByShow(show.getId(), true);
     }
   }
+
+  @Override
+  public List<Seat> getAvailableSeats(List<Integer> seatIds) {
+    return List.of();
+  }
+
 }
