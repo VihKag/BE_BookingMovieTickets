@@ -30,11 +30,11 @@ public class Ticket {
   private User user;
   @ManyToOne
   private Show show;
-  @OneToMany(mappedBy = "ticket", fetch = FetchType.EAGER)
-  private List<Seat> seats;
+  @OneToOne(mappedBy = "ticket")
+  private Seat seat;
   @ManyToOne
   private Payment payment;
-  private Float totalPrice;
+  private Float price;
   private LocalDateTime bookingDate;
 
 }

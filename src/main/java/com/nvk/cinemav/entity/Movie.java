@@ -1,5 +1,6 @@
 package com.nvk.cinemav.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,15 +8,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -33,13 +39,29 @@ public class Movie {
   private String video;
   @Column(unique = true)
   private String slug;
+  @JsonManagedReference
+  @ManyToMany
+  @JoinTable(
+      name = "movie_genres",
+      joinColumns = @JoinColumn(name = "movie_id"),
+      inverseJoinColumns = @JoinColumn(name = "genre_id")
+  )
+  private Set<Genre> genres = new HashSet<>();
   @OneToMany(mappedBy = "movie")
-  private Set<Genre> genres;
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "show_id", referencedColumnName = "id")
-  private Show show;
+  private List<Show> shows;
   private Integer duration;
   @Column(name = "`release`")
   private LocalDateTime release;
-  
+
+  public Movie(UUID movieId, String title, String description, String imageUrl, String videoUrl, String slug, Set<Genre> genres, Integer duration, LocalDateTime release) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.poster = imageUrl;
+    this.video = videoUrl;
+    this.slug = slug;
+    this.genres = genres;
+    this.duration = duration;
+    this.release = release;
+  }
 }

@@ -25,4 +25,10 @@ public class Cinema {
   @OneToMany(mappedBy = "cinema")
   private List<Screen> screens;
   private String country;
+  public Cinema(Cinema cinema) {
+    this.id = cinema.getId();
+    this.name = cinema.getName();
+    this.address = cinema.getAddress();
+    this.country = cinema.getCountry();
+  }
 }

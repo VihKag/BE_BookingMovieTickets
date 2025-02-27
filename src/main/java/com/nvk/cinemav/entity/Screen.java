@@ -1,5 +1,7 @@
 package com.nvk.cinemav.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,10 +30,8 @@ public class Screen {
   @OneToMany(mappedBy = "screen")
   private List<Seat> seats;
   private Integer capacity;
-  // Reference to the Cinema entity
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "show_id", referencedColumnName = "id")
-  private Show show;
+  @OneToMany(mappedBy = "screen")
+  private List<Show> shows;
   @ManyToOne
   private Cinema cinema;
 }

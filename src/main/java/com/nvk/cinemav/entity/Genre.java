@@ -1,5 +1,6 @@
 package com.nvk.cinemav.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Getter
@@ -27,6 +29,7 @@ public class Genre {
   private String name;
   @Column(unique = true)
   private String slug;
+  @JsonBackReference
   @ManyToMany(mappedBy = "genres")
   private Set<Movie> movies = new HashSet<>();
 }

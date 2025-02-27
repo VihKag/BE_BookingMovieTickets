@@ -1,5 +1,8 @@
 package com.nvk.cinemav.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nvk.cinemav.type.TypeSeat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
