@@ -1,8 +1,10 @@
 package com.nvk.cinemav.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nvk.cinemav.entity.Genre;
 import com.nvk.cinemav.entity.Show;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ public class AddMovieDTO {
   private MultipartFile video;
   private String slug;
   private Set<Integer> genres;
-  private UUID show;
   private Integer duration;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime release;
 }
