@@ -34,10 +34,13 @@ build/
 
 ### 💡 CHẶN CÁC FILE MÔI TRƯỜNG ###
 .env
-*.properties
+*.aplication.properties
+application.properties
+src/main/resources/application.properties
+
 *.yml
 *.yaml
-config/
+
 
 ### 💡 CHẶN FILE BUILD ###
 /target/
