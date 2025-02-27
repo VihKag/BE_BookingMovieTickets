@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ShowRepository extends JpaRepository<Show, UUID> {
-  @Query(value = "SELECT * FROM show s WHERE s.movie_id IS NOT NULL " +
+  @Query(value = "SELECT * FROM `show` s WHERE s.movie_id IS NOT NULL " +
       "AND DATE_ADD(s.time, INTERVAL s.movie.duration MINUTE) < :now",
       nativeQuery = true)
   List<Show> findFinishedShows(@Param("now") LocalDateTime now);
 
-  @Query(value = "SELECT * FROM show s WHERE s.time > NOW()", nativeQuery = true)
+  @Query(value = "SELECT * FROM `show` s WHERE s.time > NOW()", nativeQuery = true)
   List<Show> findUpcomingShows();
 
 }
