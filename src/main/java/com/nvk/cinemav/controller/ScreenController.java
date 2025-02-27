@@ -1,5 +1,6 @@
 package com.nvk.cinemav.controller;
 
+import com.nvk.cinemav.dto.ScreenDTO;
 import com.nvk.cinemav.entity.Screen;
 import com.nvk.cinemav.service.impl.ScreenService;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ScreenController {
   @GetMapping("/{id}")
   public ResponseEntity<?> getScreen(@PathVariable int id) {
     try{
-      Screen screen = screenService.getScreen(id);
+      ScreenDTO screen = screenService.getScreen(id);
       return ResponseEntity.ok(screen);
     }
     catch(IllegalArgumentException | DataAccessException e){
@@ -37,7 +38,7 @@ public class ScreenController {
   @GetMapping("/list")
   public ResponseEntity<?> getScreens() {
     try{
-      List<Screen> sceerns = screenService.getScreenList();
+      List<ScreenDTO> sceerns = screenService.getScreenList();
       return ResponseEntity.ok(sceerns);
     }
     catch(IllegalArgumentException | DataAccessException e){

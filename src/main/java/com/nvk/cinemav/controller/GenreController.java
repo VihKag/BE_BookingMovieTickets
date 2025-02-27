@@ -50,7 +50,7 @@ public class GenreController {
     return ResponseEntity.internalServerError().body(e.getMessage());}
   }
 
-  @PostMapping("/create")
+  @PostMapping("")
   public ResponseEntity<?> createGenre(@RequestBody GenreDTO genreDTO) {
     try{
       genreService.createGenre(genreDTO);

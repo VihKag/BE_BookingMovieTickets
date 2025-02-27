@@ -1,5 +1,6 @@
 package com.nvk.cinemav.controller;
 
+import com.nvk.cinemav.dto.AddShowDTO;
 import com.nvk.cinemav.dto.ShowDTO;
 import com.nvk.cinemav.entity.Show;
 import com.nvk.cinemav.service.IShowService;
@@ -26,7 +27,7 @@ public class ShowController {
   }
 
   @GetMapping("/up_comming")
-  public ResponseEntity<?> getShowsUpComing(@RequestParam String search) {
+  public ResponseEntity<?> getShowsUpComing(@RequestParam(required = false, defaultValue = "") String search) {
     try{
       List<ShowDTO> shows = showService.getListShows(search);
       return ResponseEntity.ok(shows);
@@ -43,7 +44,7 @@ public class ShowController {
     }
   }
 
-  @GetMapping("/{id}/details")
+  @GetMapping("/{id}")
   public ResponseEntity<?> getShowDetails(@PathVariable UUID id) {
     try{
       ShowDTO show = showService.getShowDetails(id);
@@ -62,16 +63,12 @@ public class ShowController {
   }
 
   @PostMapping("")
-  public ResponseEntity<?> createShow(@RequestBody UUID showId, @RequestBody Integer screanId, @RequestBody
-      Date time) {
+  public ResponseEntity<?> createShow(@RequestBody AddShowDTO show) {
     try{
-      showService.createShow(showId, screanId, time);
+      showService.createShow(show.getMovieId(), show.getScreenId(), show.getTime());
       return ResponseEntity.ok("Success!");
     }
-    catch(IllegalArgumentException e){
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    catch(DataAccessException e){
+    catch(IllegalArgumentException | DataAccessException e){
       return ResponseEntity.badRequest().body(e.getMessage());
     }
     catch (Exception e) {
