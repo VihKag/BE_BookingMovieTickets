@@ -28,7 +28,7 @@ public class Payment {
   private UUID id;
   @OneToMany(mappedBy = "payment")
   private List<Ticket> ticket;
-  private Float amount;
+  private Integer amount;
   private LocalDateTime date;
   @Enumerated(EnumType.STRING)
   private PaymentStatus status;

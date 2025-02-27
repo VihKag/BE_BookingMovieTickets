@@ -34,7 +34,6 @@ public class Ticket {
   private Seat seat;
   @ManyToOne
   private Payment payment;
-  private Float price;
+  private Integer price;
   private LocalDateTime bookingDate;
-
 }
