@@ -1,9 +1,9 @@
 package com.nvk.cinemav.controller;
 
-import com.nvk.cinemav.dto.TicketDTO;
+import com.nvk.cinemav.dto.BookingDTO;
 import com.nvk.cinemav.response.ApiResponse;
 import com.nvk.cinemav.service.ITicketService;
-import com.nvk.cinemav.service.impl.TicketService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +20,12 @@ public class TicketController {
   }
 
   @PostMapping("booking")
-  public ResponseEntity<?> bookingTicket(@RequestBody TicketDTO ticket){
+  public ResponseEntity<?> bookingTicket(@RequestBody BookingDTO ticket){
     try{
       ticketService.bookTicket(ticket);
       return ResponseEntity.ok("Booking request send!");
     }
-    catch (IllegalArgumentException e) {
+    catch (IllegalArgumentException | DataAccessException e) {
       return ResponseEntity.badRequest().body(new ApiResponse<>("Invalid request parameters!"));
     }
     catch(Exception e){
