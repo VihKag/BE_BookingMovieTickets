@@ -18,17 +18,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthFilter extends OncePerRequestFilter {
   private final JwtUtils jwtUtils;
   private final CustomUserDetailsService userDetailsService;
+
   public JwtAuthFilter(JwtUtils jwtUtils, CustomUserDetailsService userDetailsService) {
     this.jwtUtils = jwtUtils;
     this.userDetailsService = userDetailsService;
   }
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     final String authHeader = request.getHeader("Authorization");
     final String jwtToken;
     final String userEmail;
-    // **Bỏ qua các yêu cầu OAuth2**
+
+    // Bỏ qua các request OAuth2 và login
     String requestURI = request.getRequestURI();
     if (requestURI.startsWith("/oauth2/") || requestURI.startsWith("/login")) {
       filterChain.doFilter(request, response);
@@ -37,16 +40,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     // Kiểm tra nếu authHeader không tồn tại hoặc không bắt đầu bằng "Bearer "
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-      // Nếu không có token hợp lệ, tiếp tục chuỗi filter mà không xác thực
+      System.out.println("Không tìm thấy Authorization header hoặc sai format");
       filterChain.doFilter(request, response);
       return;
     }
+
     jwtToken = authHeader.substring(7);
     userEmail = jwtUtils.extractUsername(jwtToken);
+    System.out.println("Extracted Email: " + userEmail);
 
-    if (userEmail == null && SecurityContextHolder.getContext().getAuthentication() == null) {
+    if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-      if(jwtUtils.isTokenValid(jwtToken)) {
+      System.out.println("UserDetails: " + userDetails.getUsername());
+
+      if (jwtUtils.isTokenValid(jwtToken)) {
+        System.out.println("Token hợp lệ, tiến hành xác thực...");
+
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
             userDetails, null, userDetails.getAuthorities()
@@ -54,6 +63,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         securityContext.setAuthentication(token);
         SecurityContextHolder.setContext(securityContext);
+      } else {
+        System.out.println("Token không hợp lệ");
       }
     }
     filterChain.doFilter(request, response);
