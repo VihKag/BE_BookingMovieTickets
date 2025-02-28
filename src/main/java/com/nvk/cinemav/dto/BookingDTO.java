@@ -1,5 +1,6 @@
 package com.nvk.cinemav.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nvk.cinemav.entity.Payment;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,8 +19,10 @@ public class BookingDTO {
   private UUID showId;
   private List<Integer> seatId;
   private Integer price;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss") // Định dạng ISO-8601
   private LocalDateTime bookingDate;
   private Payment payment;
+  private Integer totalPrice;
   private String orderInfo;
   private String email;
 }
