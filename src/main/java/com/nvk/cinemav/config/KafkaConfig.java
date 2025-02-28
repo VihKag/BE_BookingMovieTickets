@@ -1,5 +1,6 @@
 package com.nvk.cinemav.config;
 
+import com.nvk.cinemav.dto.BookingDTO;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -10,6 +11,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @Configuration
 public class KafkaConfig {
@@ -30,14 +33,10 @@ public class KafkaConfig {
     ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
 
-    // Cấu hình retry (3 lần) và xử lý lỗi
-    // Xử lý lỗi theo cách mới
     factory.setCommonErrorHandler(new DefaultErrorHandler((record, exception) -> {
       System.err.println("Error processing message: " + record.value());
       System.err.println("Exception: " + exception.getMessage());
     }));
-
-
     return factory;
   }
   @Bean
