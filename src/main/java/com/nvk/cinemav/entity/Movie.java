@@ -1,5 +1,6 @@
 package com.nvk.cinemav.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties("genres ")
 public class Movie {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
@@ -39,7 +41,6 @@ public class Movie {
   private String video;
   @Column(unique = true)
   private String slug;
-  @JsonManagedReference
   @ManyToMany
   @JoinTable(
       name = "movie_genres",
