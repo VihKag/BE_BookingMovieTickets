@@ -30,7 +30,7 @@ public class Ticket {
   private User user;
   @ManyToOne
   private Show show;
-  @OneToOne(mappedBy = "ticket")
+  @ManyToOne
   private Seat seat;
   @ManyToOne
   private Payment payment;
