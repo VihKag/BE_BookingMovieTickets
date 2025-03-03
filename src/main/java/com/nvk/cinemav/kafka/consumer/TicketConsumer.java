@@ -7,6 +7,7 @@ import com.nvk.cinemav.entity.Seat;
 import com.nvk.cinemav.entity.Show;
 import com.nvk.cinemav.entity.Ticket;
 import com.nvk.cinemav.entity.User;
+import com.nvk.cinemav.kafka.producer.PaymentProducer;
 import com.nvk.cinemav.repository.SeatRepository;
 import com.nvk.cinemav.repository.ShowRepository;
 import com.nvk.cinemav.repository.TicketRepository;
@@ -25,15 +26,17 @@ public class TicketConsumer {
   private final SeatRepository seatRepository;
   private final UserRepository userRepository;
   private final ShowRepository showRepository;
+  private final PaymentProducer paymentProducer;
 
   public TicketConsumer(TicketRepository ticketRepository, SeatRepository seatRepository,
-      UserRepository userRepository, ShowRepository showRepository) {
+      UserRepository userRepository, ShowRepository showRepository, PaymentProducer paymentProducer) {
     this.ticketRepository = ticketRepository;
     this.seatRepository = seatRepository;
     this.userRepository = userRepository;
     this.showRepository = showRepository;
     this.objectMapper = new ObjectMapper();
     this.objectMapper.registerModule(new JavaTimeModule()); // Đăng ký JavaTimeModule
+    this.paymentProducer = paymentProducer;
   }
 
   @KafkaListener(topics = "booking-process", groupId = "booking-group", containerFactory = "kafkaListenerContainerFactory")
@@ -53,10 +56,12 @@ public class TicketConsumer {
         ticket.setSeat(seat);
         ticket.setUser(user);
         ticket.setShow(show);
+        ticket.setBookingDate(bookingInfo.getBookingDate());
         ticket.setPrice(bookingInfo.getPrice());
         ticketRepository.save(ticket);
       });
       log.info("✅ Booking processed successfully for user: {}", user.getId());
+      paymentProducer.sendPaymentRequest(bookingDTO);
     } catch (Exception e) {
       log.error("Error processing booking message: ", e);
       throw new RuntimeException(e);
