@@ -21,8 +21,8 @@ public class BookingDTO {
   private Integer price;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss") // Định dạng ISO-8601
   private LocalDateTime bookingDate;
-  private Payment payment;
   private Integer totalPrice;
+  private String baseUrl;
   private String orderInfo;
   private String email;
 }
