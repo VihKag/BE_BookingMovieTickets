@@ -70,7 +70,7 @@ public class PaymentConsumer {
     try {
       log.info("📥 Received payment URL message: {}", message);
 
-      PaymentUrlDTO paymentUrlDTO = objectMapper.convertValue(message, PaymentUrlDTO.class);
+      PaymentUrlDTO paymentUrlDTO = objectMapper.readValue(message, PaymentUrlDTO.class);
       log.info("📤 Sending payment URL to WebSocket: " + paymentUrlDTO.getUrl());
       log.info("📤 Sending payment email to WebSocket: " + paymentUrlDTO.getEmail());
       // 🟢 Gửi URL thanh toán tới frontend qua WebSocket
