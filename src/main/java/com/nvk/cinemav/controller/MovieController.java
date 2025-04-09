@@ -43,6 +43,20 @@ public class MovieController {
     }
   }
 
+  @GetMapping("/slug/{slug}")
+  public ResponseEntity<?> getMovieDetails(@PathVariable String slug) {
+    try{
+      MovieDTO movieDTO = movieService.getMovieBySlug(slug);
+      return ResponseEntity.ok(new ApiResponse<MovieDTO>("Movie Details!", movieDTO));
+    }
+    catch(IllegalArgumentException | DataAccessException e){
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+    catch(Exception e){
+      return ResponseEntity.internalServerError().body(e.getMessage());
+    }
+  }
+
   @GetMapping("/list")
   public ResponseEntity<?> getMovieList(){
     try{
@@ -56,6 +70,8 @@ public class MovieController {
       return ResponseEntity.internalServerError().body(e.getMessage());
     }
   }
+
+
 
   @PostMapping("")
   public ResponseEntity<?> addMovie(@ModelAttribute AddMovieDTO movieDTO) {

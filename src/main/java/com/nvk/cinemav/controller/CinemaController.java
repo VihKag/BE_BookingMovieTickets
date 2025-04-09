@@ -37,7 +37,7 @@ public class CinemaController {
   @GetMapping("/list")
   public ResponseEntity<?> getCinemaList() {
     try{
-      List<Cinema> cinemas = cinemaService.getCinemas();
+      List<CinemaDTO> cinemas = cinemaService.getCinemas();
       return ResponseEntity.ok(cinemas);
     }
     catch(IllegalArgumentException | DataAccessException e){

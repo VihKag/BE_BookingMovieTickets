@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, UUID> {
+  Movie findBySlug(String slug);
 }

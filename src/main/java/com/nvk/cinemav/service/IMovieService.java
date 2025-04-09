@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface IMovieService {
   MovieDTO getMovieDetails(UUID movieId);
+  MovieDTO getMovieBySlug(String slug);
   List<MovieDTO> getMovieList();
   void createMovie(AddMovieDTO movieDTO);
   void deleteMovie(UUID movieId);

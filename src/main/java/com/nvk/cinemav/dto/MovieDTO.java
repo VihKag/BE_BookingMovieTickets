@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,8 @@ public class MovieDTO {
   private String poster;
   private String video;
   private String slug;
-  private Set<Genre> genres;
-  private List<Show> shows;
+  private Set<GenreDTO> genres;
+  private List<ShowDTO> shows;
   private Integer duration;
   private LocalDateTime release;
 
@@ -40,8 +41,8 @@ public class MovieDTO {
     this.description = movie.getDescription();
     this.poster = movie.getPoster();
     this.video = movie.getVideo();
+    this.genres = movie.getGenres().stream().map(GenreDTO::new).collect(Collectors.toSet());
     this.slug = movie.getSlug();
-    this.genres = movie.getGenres();
     this.duration = movie.getDuration();
     this.release = movie.getRelease();
   }

@@ -72,9 +72,9 @@ public class PaymentController {
       HttpServletRequest request) {
     String baseUrl =
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-
+    bookingDTO.setBaseUrl(baseUrl);
     // 🟢 Gửi sự kiện "payment-request" vào Kafka
-    paymentProducer.sendPaymentRequest(baseUrl, bookingDTO);
+    paymentProducer.sendPaymentRequest(bookingDTO);
 
     return "Yêu cầu thanh toán đã được gửi. Đang xử lý...";
   }

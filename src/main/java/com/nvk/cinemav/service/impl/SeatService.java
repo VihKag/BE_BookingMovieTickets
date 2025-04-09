@@ -8,6 +8,7 @@ import com.nvk.cinemav.service.ISeatService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class SeatService implements ISeatService {
+
+  @Override
+  public List<Seat> getAvailableSeatsInShow(UUID showId) {
+    return List.of();
+  }
+
   private final SeatRepository seatRepository;
   private final ShowRepository showRepository;
   @Scheduled(fixedRate = 60000) // Chạy mỗi phút

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
@@ -47,13 +48,14 @@ public class Movie {
       joinColumns = @JoinColumn(name = "movie_id"),
       inverseJoinColumns = @JoinColumn(name = "genre_id")
   )
-  private Set<Genre> genres = new HashSet<>();
+  private Set<Genre> genres = new HashSet<>(); // Evoid NullPointerException
   @OneToMany(mappedBy = "movie")
   private List<Show> shows;
   private Integer duration;
   @Column(name = "`release`")
   private LocalDateTime release;
-
+  @OneToMany(mappedBy = "movie")
+  private List<Cast> cast;
   public Movie(UUID movieId, String title, String description, String imageUrl, String videoUrl, String slug, Set<Genre> genres, Integer duration, LocalDateTime release) {
     this.id = id;
     this.title = title;

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +41,10 @@ public class SecurityConfig {
 
   private static final String[] AUTH_WHITELIST = {
       "/api/*",
-      "/**",
       "/auth/*",
+      "/**",
       "/users/*",
+      "/ws",
       "/cinemas",
       "/genres/*",
       "/movies",
@@ -60,18 +62,19 @@ public class SecurityConfig {
           public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
             CorsConfiguration corsConfiguration=new CorsConfiguration();
             corsConfiguration.setAllowCredentials(true);// allows taking authentication with credentials
-            corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+            corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
             // providing the allowed origin details, can provide multiple origins here, 8080 is the port number of client application here
-            corsConfiguration.setAllowedMethods(Collections.singletonList("*"));// allowing all HTTP methods GET,POST,PUT etc, can configure on your need
+            corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));// allowing all HTTP methods GET,POST,PUT etc, can configure on your need
             corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));// allowing all the request headers, can configure according to your need, which headers to allow
             corsConfiguration.setMaxAge(Duration.ofMinutes(5L)); // setting the max time till which the allowed origin will not make a pre-flight request again to check if the CORS is allowed on not
             return corsConfiguration;
           }
         }))
-        .csrf(AbstractHttpConfigurer::disable)// Tắt CSRF nếu không cần
+        .csrf(AbstractHttpConfigurer::disable)// ✅ Bỏ qua CSRF cho WebSocket
         .authorizeHttpRequests(auth->auth
+            .requestMatchers("/ws/**").permitAll()
             .requestMatchers(AUTH_WHITELIST).permitAll()
-            .anyRequest().authenticated())// Cho phép truy cập không cần xác thực cho các URL đăng nhập, đăng ký
+            .anyRequest().authenticated())
         .exceptionHandling(exception -> exception
             .authenticationEntryPoint((request, response, authException) -> {
               response.setContentType("application/json");

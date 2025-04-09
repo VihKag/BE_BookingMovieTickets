@@ -7,5 +7,5 @@ import java.util.List;
 public interface ICinemaService {
   Cinema getCinemaDetails(int id);
   void updateCinemaInfor(CinemaDTO cinemaDTO);
-  List<Cinema> getCinemas();
+  List<CinemaDTO> getCinemas();
 }

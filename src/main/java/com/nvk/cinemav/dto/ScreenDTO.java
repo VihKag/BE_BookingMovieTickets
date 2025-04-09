@@ -24,6 +24,12 @@ public class ScreenDTO {
         this.id = screen.getId();
         this.name = screen.getName();
         this.capacity = screen.getCapacity();
+    }
 
+    public ScreenDTO(Integer id, String name, Integer capacity, List<ShowDTO> showDTOs) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.shows = showDTOs;
     }
 }
