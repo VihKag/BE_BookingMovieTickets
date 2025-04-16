@@ -15,11 +15,13 @@ public class CinemaDTO {
   private Integer id;
   private String name;
   private String address;
+  private String phone;
   private List<ScreenDTO> screenDTO;
 
   public CinemaDTO(Cinema cinema) {
     id = cinema.getId();
     name = cinema.getName();
     address = cinema.getAddress();
+    phone = cinema.getPhone();
   }
 }
