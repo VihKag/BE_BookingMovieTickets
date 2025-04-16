@@ -41,6 +41,7 @@ public class CinemaMapper {
         cinema.getId(),
         cinema.getName(),
         cinema.getAddress(),
+        cinema.getPhone(),
         screenDTOs
     );
   }
