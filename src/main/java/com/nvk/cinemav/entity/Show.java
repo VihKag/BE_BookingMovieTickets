@@ -2,6 +2,7 @@ package com.nvk.cinemav.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,9 +30,9 @@ public class Show {
   private UUID id;
   @OneToMany(mappedBy = "show")
   private Set<Ticket> tickets;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Movie movie;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   private Screen screen;
   private Date time;
   private Integer availableSeats;

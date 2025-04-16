@@ -1,9 +1,11 @@
 package com.nvk.cinemav.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -23,14 +25,16 @@ public class Cinema {
   private Integer id;
   private String name;
   private String address;
+  private String phone;
   @OneToMany(mappedBy = "cinema")
   @BatchSize(size = 10)
   private List<Screen> screens;
-  private String country;
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Province province;
   public Cinema(Cinema cinema) {
     this.id = cinema.getId();
     this.name = cinema.getName();
     this.address = cinema.getAddress();
-    this.country = cinema.getCountry();
+    this.province = cinema.getProvince();
   }
 }
