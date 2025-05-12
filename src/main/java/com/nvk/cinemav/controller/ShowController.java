@@ -2,6 +2,7 @@ package com.nvk.cinemav.controller;
 
 import com.nvk.cinemav.dto.AddShowDTO;
 import com.nvk.cinemav.dto.ShowDTO;
+import com.nvk.cinemav.dto.ShowDetailsDTO;
 import com.nvk.cinemav.entity.Show;
 import com.nvk.cinemav.service.IShowService;
 import java.util.ArrayList;
@@ -32,10 +33,7 @@ public class ShowController {
       List<ShowDTO> shows = showService.getListShows(search);
       return ResponseEntity.ok(shows);
     }
-    catch(IllegalArgumentException e){
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    catch(DataAccessException e){
+    catch(IllegalArgumentException | DataAccessException e){
       return ResponseEntity.badRequest().body(e.getMessage());
     }
     catch (Exception e) {
@@ -50,10 +48,7 @@ public class ShowController {
       ShowDTO show = showService.getShowDetails(id);
       return ResponseEntity.ok(show);
     }
-    catch(IllegalArgumentException e){
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    catch(DataAccessException e){
+    catch(IllegalArgumentException | DataAccessException e){
       return ResponseEntity.badRequest().body(e.getMessage());
     }
     catch (Exception e) {
@@ -67,6 +62,21 @@ public class ShowController {
     try{
       showService.createShow(show.getMovieId(), show.getScreenId(), show.getTime());
       return ResponseEntity.ok("Success!");
+    }
+    catch(IllegalArgumentException | DataAccessException e){
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return ResponseEntity.internalServerError().body(e.getMessage());
+    }
+  }
+
+  @GetMapping("/movie/{slug}")
+  public ResponseEntity<?> getListShowByMovieSlug(@PathVariable String slug){
+    try {
+      ShowDetailsDTO show = showService.getShowInforByMovieSlug(slug);
+      return ResponseEntity.ok(show);
     }
     catch(IllegalArgumentException | DataAccessException e){
       return ResponseEntity.badRequest().body(e.getMessage());

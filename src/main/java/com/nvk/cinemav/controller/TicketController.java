@@ -5,6 +5,8 @@ import com.nvk.cinemav.response.ApiResponse;
 import com.nvk.cinemav.service.ITicketService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,4 +35,18 @@ public class TicketController {
       return ResponseEntity.badRequest().body("Booking request failed!");
     }
   }
+
+//  @GetMapping("booking/{showId}")
+//  public ResponseEntity<?> getBookingInformation(@PathVariable Integer showId){
+//    try{
+//
+//    }
+//    catch (IllegalArgumentException | DataAccessException e) {
+//      return ResponseEntity.badRequest().body(new ApiResponse<>("Invalid request parameters!"));
+//    }
+//    catch(Exception e){
+//      e.printStackTrace();
+//      return ResponseEntity.badRequest().body("Booking request failed!");
+//    }
+//  }
 }
