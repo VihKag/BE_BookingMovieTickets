@@ -1,5 +1,6 @@
 package com.nvk.cinemav.repository;
 
+import com.nvk.cinemav.entity.Movie;
 import com.nvk.cinemav.entity.Show;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,4 +20,8 @@ public interface ShowRepository extends JpaRepository<Show, UUID> {
   @Query(value = "SELECT * FROM `show` s WHERE s.time > NOW()", nativeQuery = true)
   List<Show> findUpcomingShows();
 
+  List<Show> findAllByMovie_Slug(String slug);
+
+  @Query(value = "SELECT * FROM `show` s WHERE s.time > NOW() AND s.movie_id = :movieId", nativeQuery = true)
+  List<Show> findUpcomingShowsByMovieId(@Param("movieId") UUID movieId);
 }
