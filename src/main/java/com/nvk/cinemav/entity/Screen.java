@@ -1,16 +1,13 @@
 package com.nvk.cinemav.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,11 +26,11 @@ public class Screen {
   private Integer id;
   private String name;
   @OneToMany(mappedBy = "screen")
-  private List<Seat> seats;
+  private List<Seat> seats = new ArrayList<>();
   private Integer capacity;
   @OneToMany(mappedBy = "screen")
   @BatchSize(size = 10)
-  private List<Show> shows;
+  private List<Show> shows = new ArrayList<>();
   @ManyToOne(cascade = CascadeType.ALL)
   private Cinema cinema;
 }

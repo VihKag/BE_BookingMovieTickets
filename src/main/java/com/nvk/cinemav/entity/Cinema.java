@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Cinema {
   private String phone;
   @OneToMany(mappedBy = "cinema")
   @BatchSize(size = 10)
-  private List<Screen> screens;
+  private List<Screen> screens = new ArrayList<>();
   @ManyToOne(cascade = CascadeType.ALL)
   private Province province;
   public Cinema(Cinema cinema) {

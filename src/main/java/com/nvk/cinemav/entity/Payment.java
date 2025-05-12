@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Payment {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   @OneToMany(mappedBy = "payment")
-  private List<Ticket> ticket;
+  private List<Ticket> ticket = new ArrayList<>();
   private Integer amount;
   private LocalDateTime date;
   @Enumerated(EnumType.STRING)

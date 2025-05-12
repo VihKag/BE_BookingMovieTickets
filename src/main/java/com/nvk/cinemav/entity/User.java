@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class User {
       joinColumns = @JoinColumn(name = "user_id"), // Khóa ngoại trỏ tới User
       inverseJoinColumns = @JoinColumn(name = "role_id") // Khóa ngoại trỏ tới Role
   )
-  private List<Role> roles; // Danh sách vai trò của user
+  private List<Role> roles = new ArrayList<>(); // Danh sách vai trò của user
   private String phone;
   private boolean status;
   @Enumerated(EnumType.STRING)

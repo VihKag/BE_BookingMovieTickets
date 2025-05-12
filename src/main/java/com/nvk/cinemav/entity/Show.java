@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class Show {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   @OneToMany(mappedBy = "show")
-  private Set<Ticket> tickets;
+  private Set<Ticket> tickets = new HashSet<>();
   @ManyToOne(fetch = FetchType.LAZY)
   private Movie movie;
   @ManyToOne(fetch = FetchType.LAZY)

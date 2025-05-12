@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -50,12 +51,12 @@ public class Movie {
   )
   private Set<Genre> genres = new HashSet<>(); // Evoid NullPointerException
   @OneToMany(mappedBy = "movie")
-  private List<Show> shows;
+  private List<Show> shows = new ArrayList<>();
   private Integer duration;
   @Column(name = "`release`")
   private LocalDateTime release;
   @OneToMany(mappedBy = "movie")
-  private List<Cast> cast;
+  private List<Cast> cast = new ArrayList<>();
   public Movie(UUID movieId, String title, String description, String imageUrl, String videoUrl, String slug, Set<Genre> genres, Integer duration, LocalDateTime release) {
     this.id = id;
     this.title = title;

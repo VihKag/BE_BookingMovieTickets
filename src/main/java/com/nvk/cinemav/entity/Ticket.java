@@ -1,10 +1,12 @@
 package com.nvk.cinemav.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -34,6 +36,9 @@ public class Ticket {
   private Seat seat;
   @ManyToOne
   private Payment payment;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "bookedSeat_id", nullable = false, referencedColumnName = "id")
+  private BookedSeat bookedSeat;
   private Integer price;
   private LocalDateTime bookingDate;
 }
